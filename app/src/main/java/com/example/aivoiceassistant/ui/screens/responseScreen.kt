@@ -36,16 +36,14 @@ var t :String = ""
 
 @Composable
 fun responseScreen(response :String){
-    val context = LocalContext.current
-//    if(response=="volume"){
-//        var vol = action.toInt()
-//        setVolume(context,vol)
-//    }
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(start = 5.dp, end = 120.dp)) {
         Column(modifier = Modifier.padding(all = 5.dp)) {
-            ResponseExpandableBox(text = response)
+            if(response.length > 0){
+                ResponseExpandableBox(text = response)
+            }
+
         }
     }
 }
@@ -63,11 +61,11 @@ fun ResponseExpandableBox(text: String) {
     Box(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(25.dp, 25.dp, 25.dp, 0.dp))
-            .background(color = Color(red =255, green = 255, blue = 255)).padding(all = 10.dp)
+            .background(color = Color(red =255, green = 255, blue = 255))
             .width(boxSize)
             .wrapContentSize()
             .animateContentSize()
-            .padding(all = 10.dp)
+            .padding(all = 15.dp)
     ) {
         Text(text,color = Color.Black)
     }

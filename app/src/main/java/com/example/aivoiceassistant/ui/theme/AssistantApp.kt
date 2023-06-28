@@ -44,7 +44,7 @@ fun AssistantApp() {
         AssistantTopAppBar(titleState.title)
         UserQueryScreen(userDataState.t)
         if(responseState.intent!=null){
-            responseScreen(responseState.intent)
+            responseScreen(responseState.t)
         }
         SpeechRecognizerScreen()
     }

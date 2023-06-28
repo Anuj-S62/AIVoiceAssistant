@@ -30,7 +30,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 
 @Composable
@@ -50,7 +52,7 @@ fun UserQueryScreen(userQuery:String){
 @Composable
 fun ExpandableBox(text: String) {
     var expanded by remember { mutableStateOf(true) }
-
+    var x =  MaterialTheme.typography.displaySmall
     val boxSize by animateDpAsState(
         if (expanded) (getSize(text)).dp else 10.dp,
         animationSpec = tween(durationMillis = 70, easing = LinearEasing)
@@ -60,16 +62,15 @@ fun ExpandableBox(text: String) {
         modifier = Modifier
             .clip(shape = RoundedCornerShape(25.dp, 25.dp, 0.dp, 25.dp))
             .width(boxSize)
-            .background(color = Color(red = 207, green = 245, blue = 162))
+            .background(color = MaterialTheme.colorScheme.primary)
             .wrapContentSize()
             .animateContentSize()
-            .padding(all = 10.dp)
+            .padding(all = 15.dp)
     ) {
         Text(text,color = Color.Black)
     }
 }
-//
 fun getSize(text: String):Int{
     if(text.length >= 25) return 250
-    return 20 + text.length*10
+    return 30 + text.length*10
 }
