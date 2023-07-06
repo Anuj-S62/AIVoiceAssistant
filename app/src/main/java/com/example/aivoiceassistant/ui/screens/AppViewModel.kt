@@ -6,28 +6,36 @@ import android.content.Context
 import android.os.Build
 import android.speech.tts.TextToSpeech
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+//import com.example.aivoiceassistant.features.AlarmHelper
+import com.example.aivoiceassistant.features.alarm.AlarmItem
+import com.example.aivoiceassistant.features.alarm.AndroidAlarmScheduler
+import com.example.aivoiceassistant.features.alarm.setAlarm
 import com.example.aivoiceassistant.features.getDateTime
 import com.example.aivoiceassistant.features.makeCall
 import com.example.aivoiceassistant.features.openAnotherApp
 import com.example.aivoiceassistant.features.sendEmial
-import com.example.aivoiceassistant.features.setAlarm
+//import com.example.aivoiceassistant.features.setAlarm
 import com.example.aivoiceassistant.features.setVolume
 import com.example.aivoiceassistant.features.silentMode
 import com.example.aivoiceassistant.features.toggleTorch
 //import com.example.aivoiceassistant.features.toggleWifi
 import com.example.aivoiceassistant.model.ResponseModel
+import com.example.aivoiceassistant.model.StateModel
 import com.example.aivoiceassistant.model.TitleModel
 import com.example.aivoiceassistant.model.UserDataModel
 import com.example.aivoiceassistant.network.ApiService
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
+//import kotlinx.coroutines.DefaultExecutor.schedule
 import kotlinx.coroutines.Dispatchers
+//import kotlinx.coroutines.NonCancellable.message
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,6 +46,10 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.HttpException
+import java.io.IOException
+import java.time.LocalDateTime
+import java.util.Calendar
 import java.util.Locale
 
 
@@ -52,12 +64,18 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     var _responseState = MutableStateFlow(ResponseModel())
         private set
     var _titleState = MutableStateFlow(TitleModel())
+    var _uiState = MutableStateFlow(StateModel())
     var responseState : StateFlow<ResponseModel> =_responseState.asStateFlow()
     var userDataState : StateFlow<UserDataModel> = _userDataState.asStateFlow()
     var titleState : StateFlow<TitleModel> = _titleState.asStateFlow()
+    var uiState= _uiState.asStateFlow()
     var context = application as Context
 
+
+
     init {
+//        setAlarm(context = context,"15:17")
+
         viewModelScope.launch {
             launch { animateUserQuery() }
             launch { animateTitle() }
@@ -92,7 +110,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                 )
             }
             i++;
-            delay(70)
+            delay(40)
         }
     }
     suspend fun animateResponse(){
@@ -109,6 +127,23 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
             i++;
             delay(60)
         }
+    }
+
+    fun alarmReceived(){
+        _uiState.update {
+            it.copy(
+                isAlarmReceived = true
+            )
+        }
+    }
+
+    fun cancelAlarm(){
+        _uiState.update {
+            it.copy(
+                isAlarmReceived = false
+            )
+        }
+
     }
 
     fun performSR(res:String){
@@ -165,6 +200,12 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                 }
 
             }
+            if(responseState.value.intent=="alarm_set"){
+                setAlarm(context = context,responseState.value.action,0)
+            }
+            if(responseState.value.intent=="alarm_remove"){
+                setAlarm(context,responseState.value.action,1)
+            }
         }
 
     }
@@ -172,41 +213,43 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         val fields: HashMap<String?, RequestBody?> = HashMap()
         fields["text"] = (query).toRequestBody("text/plain".toMediaTypeOrNull())
 
-        val response = ApiService.retrofitService.getIntent(fields)
-        if (response.isSuccessful) {
-            val responseBody = response.body()?.string()
-            if (!responseBody.isNullOrEmpty()) {
-                val gson = Gson()
-                val mapType = object : TypeToken<Map<String, Any>>() {}.type
-                val resultMap: Map<String, Any> = gson.fromJson(responseBody, mapType)
-                Log.d("Response Map:", resultMap.toString())
-                _responseState.update {
-                        curr->curr.copy(
-                    intent = resultMap["intent"].toString(),
-                    action = resultMap["intentVal"].toString(),
-                    response = resultMap["response"].toString(),
-                    extra = resultMap["extraVal"].toString(),
-                    flag = true
-                )
+            val response = ApiService.retrofitService.getIntent(fields)
+            if (response.isSuccessful) {
+                val responseBody = response.body()?.string()
+                if (!responseBody.isNullOrEmpty()) {
+                    val gson = Gson()
+                    val mapType = object : TypeToken<Map<String, Any>>() {}.type
+                    val resultMap: Map<String, Any> = gson.fromJson(responseBody, mapType)
+                    Log.d("Response Map:", resultMap.toString())
+                    _responseState.update {
+                            curr->curr.copy(
+                        intent = resultMap["intent"].toString(),
+                        action = resultMap["intentVal"].toString(),
+                        response = resultMap["response"].toString(),
+                        extra = resultMap["extraVal"].toString(),
+                        flag = true
+                    )
+                    }
+
+                    Log.d("API Response : ",_responseState.value.response!!)
+                    Log.d("API Response : ",_responseState.value.intent!!)
+                    Log.d("API Response : ",_responseState.value.action!!)
+                    // Access the values using keys
+                    val value = resultMap["intent"].toString()
                 }
 
-                Log.d("API Response : ",_responseState.value.response!!)
-                Log.d("API Response : ",_responseState.value.intent!!)
-                Log.d("API Response : ",_responseState.value.action!!)
-                // Access the values using keys
-                val value = resultMap["intent"].toString()
+            } else {
+                _responseState.update { curr ->
+                    curr.copy(
+                        flag = false,
+                        intent = "Sorry I Can't Understand please try again after some time ",
+                        action = "",
+                        response = ""
+                    )
+                }
+                Log.e("RETROFIT_ERROR", response.code().toString())
             }
 
-        } else {
-            _responseState.update { curr ->
-                curr.copy(
-                    flag = false,
-                    intent = "Sorry I Can't Understand please try again after some time ",
-                    action = "",
-                    response = ""
-                )
-            }
-            Log.e("RETROFIT_ERROR", response.code().toString())
-        }
+
     }
 }

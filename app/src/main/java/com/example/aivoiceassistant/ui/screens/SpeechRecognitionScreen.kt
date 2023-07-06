@@ -72,9 +72,12 @@ fun SpeechRecognizerScreen
 //    "${KEYWORD_FILE_PATH}"
     val porcupineManager = PorcupineManager.Builder()
         .setAccessKey("zacHLDfY8qGEoFMt3j9obQBUaF3BE+0FJ9MOmhMKBfJgR/AmUWJseQ==")
-        .setKeyword(Porcupine.BuiltInKeyword.HEY_SIRI)
+        .setKeyword(Porcupine.BuiltInKeyword.ALEXA)
         .build(context, wakeWordCallback)
 
     porcupineManager.start()
+    Button(onClick = {speechRecognizerLauncher.launch(Unit)}) {
+        Text("SR")
+    }
 
 }

@@ -55,7 +55,7 @@ fun ExpandableBox(text: String) {
     var x =  MaterialTheme.typography.displaySmall
     val boxSize by animateDpAsState(
         if (expanded) (getSize(text)).dp else 10.dp,
-        animationSpec = tween(durationMillis = 70, easing = LinearEasing)
+        animationSpec = tween(durationMillis = 40, easing = LinearEasing)
     )
 
     Box(
