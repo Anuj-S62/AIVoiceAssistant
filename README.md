@@ -1,5 +1,16 @@
 # AIVoiceAssistant
 
+This app performs many tasks like changing volume, make call, open app, start email, set alarm, remove alarm, date/time etc using voice commands.
+
+Tech used:
+
+  -kotlin
+  -Jetpack Compose
+  -Retrofit
+  -Microsoft Azure
+  -NLP
+  -Python
+
 
 App screenshots:
 
