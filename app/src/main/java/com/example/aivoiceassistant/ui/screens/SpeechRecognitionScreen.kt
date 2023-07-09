@@ -80,5 +80,4 @@ fun SpeechRecognizerScreen
     Button(onClick = {speechRecognizerLauncher.launch(Unit)}) {
         Text("SR")
     }
-
 }
