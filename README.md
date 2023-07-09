@@ -2,6 +2,10 @@
 
 This app performs many tasks like changing volume, make call, open app, start email, set alarm, remove alarm, date/time etc using voice commands.
 
+App also supports custom wake word detection which detects wake word from audio stream and starts speech recoginition.
+
+Wake Word : Alexa
+
 Tech used:
 
   kotlin, Jetpack Compose, Retrofit, Microsoft Azure, NLP, Python
