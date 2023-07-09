@@ -6,6 +6,10 @@ App also supports custom wake word detection which detects wake word from audio 
 
 Wake Word : Alexa
 
+All NLU Models : [Models](https://github.com/Anuj-S62/AIVoiceModel)
+
+Accuracy of used model : 84% 
+
 Tech used:
 
   kotlin, Jetpack Compose, Retrofit, Microsoft Azure, NLP, Python
