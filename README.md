@@ -4,14 +4,8 @@ This app performs many tasks like changing volume, make call, open app, start em
 
 Tech used:
 
-  kotlin \n
-  Jetpack Compose
-  Retrofit
-  Microsoft Azure
-  NLP
-  Python
+  kotlin, Jetpack Compose, Retrofit, Microsoft Azure, NLP, Python
   
-
 
 App screenshots:
 
