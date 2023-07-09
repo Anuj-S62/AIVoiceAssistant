@@ -4,7 +4,7 @@ This app performs many tasks like changing volume, make call, open app, start em
 
 Tech used:
 
-  kotlin
+  kotlin \n
   Jetpack Compose
   Retrofit
   Microsoft Azure
