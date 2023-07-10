@@ -113,7 +113,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
             delay(40)
         }
     }
-    suspend fun animateResponse(){
+    suspend fun animateIntent(){
         var s : String = responseState.value.intent;
         var temp = "";
         var i: Int = 0
@@ -125,8 +125,26 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
             )
             }
             i++;
-            delay(60)
+            delay(40)
         }
+
+    }
+
+    suspend fun animateResponse(){
+        var s : String = responseState.value.response;
+        var temp = "";
+        var i: Int = 0
+        while(i<s.length){
+            temp += s[i];
+            _responseState.update {
+                    c->c.copy(
+                res = temp
+            )
+            }
+            i++;
+            delay(40)
+        }
+
     }
 
     fun alarmReceived(){
@@ -163,6 +181,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         }
         viewModelScope.launch {
             getResponse(s)
+
+            animateIntent()
             animateResponse()
             if(responseState.value.intent=="audio_volume_up"){
                 setVolume(context,responseState.value.action.toString().toInt(),responseState.value.extra)
@@ -177,6 +197,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                 }
             }
             if(responseState.value.intent=="audio_volume_mute"){
+                Log.d("dkhsjd","hello world")
                 silentMode(context)
             }
             if(responseState.value.intent=="open_app"){
@@ -223,7 +244,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                     Log.d("Response Map:", resultMap.toString())
                     _responseState.update {
                             curr->curr.copy(
-                        intent = resultMap["intent"].toString(),
+                        intent =  resultMap["intent"].toString(),
                         action = resultMap["intentVal"].toString(),
                         response = resultMap["response"].toString(),
                         extra = resultMap["extraVal"].toString(),

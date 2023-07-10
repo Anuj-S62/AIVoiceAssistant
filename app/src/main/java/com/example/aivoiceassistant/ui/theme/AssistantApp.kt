@@ -50,16 +50,16 @@ fun AssistantApp() {
         AssistantTopAppBar(titleState.title)
         UserQueryScreen(userDataState.t)
         if(responseState.intent!=null){
-            responseScreen(responseState.t)
+            responseScreen(responseState.t,responseState.res)
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             SpeechRecognizerScreen()
         }
-        if(uiState.isAlarmReceived){
-            Button(onClick = {appViewModel.cancelAlarm()}) {
-                Text("Cancel Alarm")
-            }
-        }
+//        if(uiState.isAlarmReceived){
+//            Button(onClick = {appViewModel.cancelAlarm()}) {
+//                Text("Cancel Alarm")
+//            }
+//        }
 
     }
 }

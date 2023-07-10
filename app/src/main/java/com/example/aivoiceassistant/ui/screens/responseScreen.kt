@@ -24,24 +24,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.aivoiceassistant.features.setVolume
 import kotlinx.coroutines.delay
+import java.lang.Long.max
 
 val givenText = "increase the volume of my phone"
 var t :String = ""
 
 @Composable
-fun responseScreen(response :String){
+fun responseScreen(response :String,text2:String){
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(start = 5.dp, end = 120.dp)) {
         Column(modifier = Modifier.padding(all = 5.dp)) {
             if(response.length > 0){
-                ResponseExpandableBox(text = response)
+                ResponseExpandableBox(text = response,text2)
             }
 
         }
@@ -49,24 +51,28 @@ fun responseScreen(response :String){
 }
 
 @Composable
-fun ResponseExpandableBox(text: String) {
+fun ResponseExpandableBox(text: String,text2:String) {
 
     var expanded by remember { mutableStateOf(true) }
 
     val boxSize by animateDpAsState(
-        if (expanded) (getSize(text)).dp else 10.dp,
-        animationSpec = tween(durationMillis = 70, easing = LinearEasing)
+        if (expanded) (getSize(kotlin.math.max(text.length,text2.length) + 40)).dp else 60.dp,
+        animationSpec = tween(durationMillis = 40, easing = LinearEasing)
     )
 
     Box(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(25.dp, 25.dp, 25.dp, 0.dp))
-            .background(color = Color(red =255, green = 255, blue = 255))
+            .background(color = Color(red = 255, green = 255, blue = 255))
             .width(boxSize)
             .wrapContentSize()
             .animateContentSize()
             .padding(all = 15.dp)
     ) {
-        Text(text,color = Color.Black)
+        Column(horizontalAlignment = Alignment.Start) {
+            Text("Intent : "+text,color = Color.Black)
+            Text(text2,color = Color.Black)
+        }
     }
 }
+

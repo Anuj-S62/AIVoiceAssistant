@@ -10,5 +10,6 @@ data class ResponseModel (
     val response: String = "",
     val extra:String = "",
     val flag: Boolean = false,
-    val t:String = ""
+    val t:String = "",
+    val res:String = ""
     )
