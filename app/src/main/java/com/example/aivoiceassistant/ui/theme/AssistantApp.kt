@@ -1,7 +1,9 @@
 package com.example.aivoiceassistant.ui.theme
 
+//import AlarmNotificationService
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Intent
 import android.os.Build
 import android.speech.SpeechRecognizer
 import android.util.Log
@@ -24,12 +26,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.aivoiceassistant.AlarmNotificationService
 import com.example.aivoiceassistant.ui.screens.AppViewModel
 import com.example.aivoiceassistant.ui.screens.SpeechRecognizerScreen
 import com.example.aivoiceassistant.ui.screens.UserQueryScreen
 import com.example.aivoiceassistant.ui.screens.responseScreen
+//import com.example.counter.AlarmNotificationService
 
 
 //var title:String = ""
@@ -44,6 +49,7 @@ fun AssistantApp() {
     val userDataState by appViewModel.userDataState.collectAsState()
     val titleState by appViewModel.titleState.collectAsState()
     val uiState by appViewModel.uiState.collectAsState()
+    val context = LocalContext.current
     Column(modifier = Modifier
         .fillMaxSize()
         .background(color = Color.Black)) {
@@ -55,11 +61,6 @@ fun AssistantApp() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             SpeechRecognizerScreen()
         }
-//        if(uiState.isAlarmReceived){
-//            Button(onClick = {appViewModel.cancelAlarm()}) {
-//                Text("Cancel Alarm")
-//            }
-//        }
 
     }
 }

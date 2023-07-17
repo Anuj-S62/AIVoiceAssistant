@@ -17,7 +17,7 @@ fun setAlarm(context: Context,time:String,setReset:Int){
     val localDateTime = currentDate.atTime(t)
     alarmItem = AlarmItem(
         time = localDateTime,
-        message = "hello Alarm Detected"
+        message = time
     )
     if(setReset==0){
         alarmItem?.let(scheduler::schedule)

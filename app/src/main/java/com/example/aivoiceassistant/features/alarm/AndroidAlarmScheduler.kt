@@ -17,26 +17,40 @@ class AndroidAlarmScheduler(
     override fun schedule(item: AlarmItem) {
         val intent = Intent(context, AlarmReceiver::class.java).apply {
             putExtra("EXTRA_MESSAGE", item.message)
+            putExtra("cancel",false)
         }
         Log.d("Alarm Set","Alarm Set")
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            0,
+//            item.hashCode(),
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             item.time.atZone(ZoneId.systemDefault()).toEpochSecond() * 1000,
-            PendingIntent.getBroadcast(
-                context,
-                item.hashCode(),
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
+            pendingIntent
         )
     }
 
     override fun cancel(item: AlarmItem) {
+        Log.d("Alarm","Alarm Canceled")
+        Log.d("item hash Code",item.hashCode().toString())
+
+        val intent = Intent(context, AlarmReceiver::class.java).apply {
+            putExtra("EXTRA_MESSAGE", item.message)
+            putExtra("cancel",true)
+        }
         alarmManager.cancel(
             PendingIntent.getBroadcast(
                 context,
-                item.hashCode(),
-                Intent(context, AlarmReceiver::class.java),
+                0,
+//                item.hashCode(),
+                intent,
+//                Intent(context, AlarmReceiver::class.java),
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         )
