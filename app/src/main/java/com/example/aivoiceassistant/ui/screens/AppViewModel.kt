@@ -72,7 +72,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     init {
 //        setAlarm(context = context,"15:17")
 //        if(responseState.value.intent=="alarm_set"){
-            setAlarm(context = context,"17:52",0)
+//            setAlarm(context = context,"17:52",0)
 //        }
         viewModelScope.launch {
             launch { animateUserQuery() }
