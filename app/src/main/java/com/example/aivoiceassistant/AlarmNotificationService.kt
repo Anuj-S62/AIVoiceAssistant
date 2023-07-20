@@ -8,6 +8,9 @@ import android.app.PendingIntent.getActivity
 import android.app.PendingIntent.getBroadcast
 import android.app.Service
 import android.content.Intent
+import android.media.MediaPlayer
+import android.media.Ringtone
+import android.media.RingtoneManager
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -16,43 +19,47 @@ import com.example.aivoiceassistant.R
 
 class AlarmNotificationService:Service(){
 
-//    val notificationManager : NotificationManager? = null
-
     override fun onBind(p0: Intent?): IBinder? {
         return null
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d("kadjakjkajskajksajaks","kdjskjdksjdkjskdjskjd")
+        val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+        mediaPlayer = MediaPlayer.create(applicationContext,uri)
+        val time = intent?.getStringExtra("time")
         when(intent?.action){
-            Actions.START.toString() -> start()
-            Actions.STOP.toString() -> stopSelf()
+            Actions.START.toString() -> start(time.toString())
+            Actions.STOP.toString() -> stop()
         }
         return super.onStartCommand(intent, flags, startId)
     }
-    fun start(){
-        showNotification()
+
+    private fun stop(){
+        stopForeground(STOP_FOREGROUND_REMOVE)
     }
 
-    fun showNotification(){
+    private fun start(time:String){
+        mediaPlayer?.isLooping = true
+        mediaPlayer?.start()
+        showNotification(time)
+    }
+
+    private fun showNotification(time:String){
         Log.d("service","service")
 
-        val intent = Intent(applicationContext, MainActivity:: class.java).apply{
+        val intent = Intent(applicationContext, CancelAlarmReceiver:: class.java).apply{
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
-        val pendingIntent = getActivity(applicationContext, 0, intent, FLAG_IMMUTABLE)
+        intent.putExtra("time",time)
+        intent.putExtra("cancel",true)
+        val pendingIntent = getBroadcast(applicationContext, 0, intent, FLAG_IMMUTABLE)
 
 
-        val notification: Notification =
-            NotificationCompat.Builder(applicationContext, "alarm_channel")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("title")
-                .setAutoCancel(true)
-//                .addAction(increaseAction)
-                .setOnlyAlertOnce(true)
-//                .addAction(R.drawable.ic_launcher_foreground,"-$dec",decreasePendingIntent)
-                .setContentText("lsdskdl")
-                .build()
+        val notification = Notification.Builder(applicationContext,"alarm_channel")
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle("Alarm triggered : $time")
+            .addAction(androidx.core.R.drawable.notification_bg,"Dismiss",pendingIntent)
+            .build()
         startForeground(124,notification)
     }
 

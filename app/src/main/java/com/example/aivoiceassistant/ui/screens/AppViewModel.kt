@@ -12,9 +12,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-//import com.example.aivoiceassistant.features.AlarmHelper
-import com.example.aivoiceassistant.features.alarm.AlarmItem
-import com.example.aivoiceassistant.features.alarm.AndroidAlarmScheduler
 import com.example.aivoiceassistant.features.alarm.setAlarm
 import com.example.aivoiceassistant.features.getDateTime
 import com.example.aivoiceassistant.features.makeCall
@@ -32,10 +29,6 @@ import com.example.aivoiceassistant.model.UserDataModel
 import com.example.aivoiceassistant.network.ApiService
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.CoroutineScope
-//import kotlinx.coroutines.DefaultExecutor.schedule
-import kotlinx.coroutines.Dispatchers
-//import kotlinx.coroutines.NonCancellable.message
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -46,12 +39,6 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.HttpException
-import java.io.IOException
-import java.time.LocalDateTime
-import java.util.Calendar
-import java.util.Locale
-
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 class AppViewModel(application: Application) : AndroidViewModel(application) {
@@ -70,15 +57,10 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
 
     init {
-//        setAlarm(context = context,"15:17")
-//        if(responseState.value.intent=="alarm_set"){
-//            setAlarm(context = context,"17:52",0)
-//        }
         viewModelScope.launch {
             launch { animateUserQuery() }
             launch { animateTitle() }
         }
-//        setAlarm(context)
     }
 
     suspend fun animateTitle(){

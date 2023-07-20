@@ -17,14 +17,12 @@ class AndroidAlarmScheduler(
     override fun schedule(item: AlarmItem) {
         val intent = Intent(context, AlarmReceiver::class.java).apply {
             putExtra("EXTRA_MESSAGE", item.message)
-            putExtra("cancel",false)
         }
         Log.d("Alarm Set","Alarm Set")
 
         val pendingIntent = PendingIntent.getBroadcast(
             context,
-            0,
-//            item.hashCode(),
+            item.hashCode(),
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
@@ -42,17 +40,15 @@ class AndroidAlarmScheduler(
 
         val intent = Intent(context, AlarmReceiver::class.java).apply {
             putExtra("EXTRA_MESSAGE", item.message)
-            putExtra("cancel",true)
         }
         alarmManager.cancel(
             PendingIntent.getBroadcast(
                 context,
-                0,
-//                item.hashCode(),
+                item.hashCode(),
                 intent,
-//                Intent(context, AlarmReceiver::class.java),
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         )
+
     }
 }

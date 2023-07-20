@@ -4,12 +4,15 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,8 +39,11 @@ import com.example.aivoiceassistant.ui.theme.AiVoiceAssistantTheme
 import com.example.aivoiceassistant.ui.theme.AssistantApp
 import java.util.Locale
 
+var mediaPlayer : MediaPlayer? = null
 class MainActivity : ComponentActivity() {
     var outputTxt by mutableStateOf("Click button for Speech text ")
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -54,65 +60,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-//    @Composable
-//    fun volumeButton(){
-//        val appViewModel: AppViewModel = viewModel()
-//        val t = remember { mutableStateOf("inc vol") }
-//        val context = LocalContext.current
-//        var text by remember { mutableStateOf("kdmd") }
-//        text = outputTxt
-//        appViewModel.performSR(text)
-//        Box(modifier = Modifier
-//            .clickable(onClick = {
-//                text = speechRecognition(context)
-//            })
-//            .clip(CircleShape) ,contentAlignment = Alignment.Center
-//        )
-//        {
-//            Text(text = , fontSize = 40.sp,fontWeight = FontWeight.Medium,color = Color(255, 120, 0))
-//        }
-//    }
-
-
-//    fun speechRecognition(context: Context) : String {
-//        if (!SpeechRecognizer.isRecognitionAvailable(context)) {
-//            Toast.makeText(context, "Speech not Available", Toast.LENGTH_SHORT).show()
-//        } else {
-//            //calling a speech recognizer intent
-//            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-//
-//            //specifying language model as language web search
-//            intent.putExtra(
-//                RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH
-//            )
-//
-//            //specifying extra language as default english language
-//            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
-//
-//            //specifying prompt as Speak something
-//            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak Something")
-//            val result = startActivityForResult(intent, 101)
-//            return outputTxt
-//        }
-//        return ""
-//    }
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
-//
-//        super.onActivityResult(requestCode, resultCode, data)
-//        // on below line we are checking if the request
-//        // code is same and result code is ok
-//        if (requestCode == 101 && resultCode == Activity.RESULT_OK) {
-//            val result = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-//            // on below line we are setting result
-//            // in our output text method.
-//            outputTxt = result?.get(0).toString()
-////            return result?.get(0).toString()
-//
-//        }
-//
-//    }
 }
 
 @Composable
