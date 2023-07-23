@@ -17,8 +17,7 @@ Tech used:
 
 App screenshots:
 
-<img src="https://github.com/Anuj-S62/AIVoiceAssistant/assets/96018337/808bf0e9-d595-4229-a8e9-7e5b0b0f8b2e" width="200">
-<img src="https://github.com/Anuj-S62/AIVoiceAssistant/assets/96018337/c5effffb-d484-4d5a-b46a-0847a46e44ad" width="200">
+<img src="https://github.com/Anuj-S62/AIVoiceAssistant/assets/96018337/d6ddeab5-7e1b-4ce1-b706-4ed4536918ed" width="600">
 <img src="https://github.com/Anuj-S62/AIVoiceAssistant/assets/96018337/64e25c42-fbc0-43cc-bec2-c6c602428204" width="200">
 <img src="https://github.com/Anuj-S62/AIVoiceAssistant/assets/96018337/849a7d9b-a609-4c6f-a0ee-1ca552a7209f" width="200">
 <img src="https://github.com/Anuj-S62/AIVoiceAssistant/assets/96018337/fa0af9eb-1299-42a0-8003-099bb29617b5" width="200">
