@@ -38,6 +38,7 @@ class AppService : Service() {
 //                    } else
 //                        permissionState.launchPermissionRequest()
                 }
+
                 1 -> {
                     // bumblebee detected
                     Log.d("porcupine","bumblebee")
