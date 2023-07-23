@@ -30,6 +30,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.aivoiceassistant.AlarmNotificationService
+import com.example.aivoiceassistant.services.AppService
 import com.example.aivoiceassistant.ui.screens.AppViewModel
 import com.example.aivoiceassistant.ui.screens.SpeechRecognizerScreen
 import com.example.aivoiceassistant.ui.screens.UserQueryScreen
@@ -61,6 +62,14 @@ fun AssistantApp() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             SpeechRecognizerScreen()
         }
+        Button(onClick = {
+            val intent = Intent(context,AppService::class.java).also {
+                it.action = AppService.Action.START.toString()
+            }
+            context.startForegroundService(intent)
+        }) {
+            Text("Start Service")
+        }
 
     }
 }
@@ -71,6 +80,6 @@ fun AssistantTopAppBar(title:String) {
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(all = 20.dp), horizontalArrangement = Arrangement.Center) {
-        Text(text = title, style = MaterialTheme.typography.headlineSmall)
+        Text(text = title, style = MaterialTheme.typography.headlineSmall, color = Color.White)
     }
 }

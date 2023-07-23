@@ -7,19 +7,26 @@ import android.content.Context
 import android.os.Build
 
 
-class AppNotificationChannel: Application(){
+class AlarmNotificationChannel: Application(){
 
     override fun onCreate() {
         super.onCreate()
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val channel = NotificationChannel(
+            val alarmChannel = NotificationChannel(
                 "alarm_channel",
                 "Alarm NOTIFICATION",
                 NotificationManager.IMPORTANCE_HIGH
             )
+            val appServiceChannel = NotificationChannel(
+                "app_service_channel",
+                "AI Voice NOTIFICATION",
+                NotificationManager.IMPORTANCE_HIGH
+            )
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-            notificationManager.createNotificationChannel(channel)
+            notificationManager.createNotificationChannel(alarmChannel)
+            notificationManager.createNotificationChannel(appServiceChannel)
+
         }
     }
 }

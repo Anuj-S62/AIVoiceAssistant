@@ -19,7 +19,6 @@
     <uses-feature android:name="android.hardware.camera.flash" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera.flash" />
-
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
@@ -59,7 +58,7 @@
     </queries>
 
     <application
-        android:name=".AppNotificationChannel"
+        android:name=".AlarmNotificationChannel"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -86,9 +85,11 @@
             </intent-filter>
             
         </activity>
+        <service android:name=".services.AppService"/>
         <service android:name=".AlarmNotificationService"/>
         <receiver android:name=".CancelAlarmReceiver"/>
         <receiver android:name=".AlarmReceiver" />
+        <receiver android:name=".StopServiceReceiver"/>
     </application>
 
 </manifest>
